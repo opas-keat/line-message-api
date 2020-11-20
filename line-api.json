@@ -1,0 +1,138 @@
+// Event Text
+{
+    "destination": "",
+    "events": [
+     {
+      "replyToken": "",
+      "type": "message",
+      "timestamp": ,
+      "source": {
+       "type": "user",
+       "userId": "U4af4980629..."
+      },
+      "message": {
+       "id": "325708",
+       "type": "text",
+       "text": "Hello, world"
+      }
+     }
+    ]
+   }
+   
+   
+   // Event Postback
+   {
+       "events": [
+           {
+               "type": "postback",
+               "replyToken": "",
+               "source": {
+                   "userId": "",
+                   "type": "user"
+               },
+               "timestamp": 1583910832901,
+               "mode": "active",
+               "postback": {
+                   "data": "ไม่"
+               }
+           }
+       ],
+       "destination": ""
+   }
+   
+   // Event Sticker
+   {
+       "events": [
+           {
+               "type": "message",
+               "replyToken": "",
+               "source": {
+                   "userId": "",
+                   "type": "user"
+               },
+               "timestamp": 1585556985421,
+               "mode": "active",
+               "message": {
+                   "type": "sticker",
+                   "id": "",
+                   "stickerId": "11048462",
+                   "packageId": "1272558",
+                   "stickerResourceType": "STATIC"
+               }
+           }
+       ],
+       "destination": ""
+   }
+   
+   // Event Location
+   {
+       "events": [
+           {
+               "type": "message",
+               "replyToken": "",
+               "source": {
+                   "userId": "",
+                   "type": "user"
+               },
+               "timestamp": 1585557653359,
+               "mode": "active",
+               "message": {
+                   "type": "location",
+                   "id": "11692800984708",
+                   "address": "19 Pracha Chuen Rd, Khwaeng Bang Sue, Khet Bang Sue, Krung Thep Maha Nakhon 10800, Thailand",
+                   "latitude": 13.816170514002808,
+                   "longitude": 100.53357490021723
+               }
+           }
+       ],
+       "destination": ""
+   }
+   
+   // Event Image
+   {
+       "events": [
+           {
+               "type": "message",
+               "replyToken": "",
+               "source": {
+                   "userId": "",
+                   "type": "user"
+               },
+               "timestamp": 1585568483148,
+               "mode": "active",
+               "message": {
+                   "type": "image",
+                   "id": "11693781930386",
+                   "contentProvider": {
+                       "type": "line"
+                   }
+               }
+           }
+       ],
+       "destination": ""
+   }
+   
+   // Event Audio
+   {
+       "events": [
+           {
+               "type": "message",
+               "replyToken": "",
+               "source": {
+                   "userId": "",
+                   "type": "user"
+               },
+               "timestamp": 1585569249008,
+               "mode": "active",
+               "message": {
+                   "type": "audio",
+                   "id": "11693855951434",
+                   "contentProvider": {
+                       "type": "line"
+                   },
+                   "duration": 1916
+               }
+           }
+       ],
+       "destination": ""
+   }
