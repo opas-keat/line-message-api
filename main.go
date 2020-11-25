@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"io/ioutil"
 	"log"
@@ -34,6 +35,11 @@ type ReplyMessage struct {
 	Messages   []Text `json:"messages"`
 }
 
+type SendMessage struct {
+	To       string `json:"to"`
+	Messages []Text `json:"messages"`
+}
+
 type Text struct {
 	Type string `json:"type"`
 	Text string `json:"text"`
@@ -60,6 +66,8 @@ func main() {
 
 	app.Post("/webhook", webhook)
 
+	app.Get("/sendMessage", sendMessageLine)
+
 	// 404 Handler
 	app.Use(func(c *fiber.Ctx) error {
 		return c.SendStatus(404) // => 404 "Not Found"
@@ -77,6 +85,7 @@ func webhook(c *fiber.Ctx) error {
 		log.Println("err")
 		return c.Status(404).JSON(fiber.Map{"status": "error", "message": "", "data": nil})
 	}
+	log.Println("UserId = " + input.Events[0].Source.UserID)
 	fullname := getProfile(input.Events[0].Source.UserID)
 	log.Println(fullname)
 	text := Text{
@@ -84,43 +93,72 @@ func webhook(c *fiber.Ctx) error {
 		Text: "ข้อความเข้ามา : " + input.Events[0].Message.Text + " ยินดีต้อนรับ : " + fullname,
 	}
 	log.Println(text)
-	// message := ReplyMessage{
-	// 	ReplyToken: input.Events[0].ReplyToken,
-	// 	Messages: []Text{
-	// 		text,
-	// 	},
-	// }
-
-	// replyMessageLine(message)
-
+	message := ReplyMessage{
+		ReplyToken: input.Events[0].ReplyToken,
+		Messages: []Text{
+			text,
+		},
+	}
+	replyMessageLine(message)
 	// log.Println(fullname)
 	return c.SendString("Hi👋!, This Line Message Api")
 }
 
-// func replyMessageLine(Message ReplyMessage) error {
-// 	value, _ := json.Marshal(Message)
+func replyMessageLine(Message ReplyMessage) error {
+	value, _ := json.Marshal(Message)
 
-// 	url := "https://api.line.me/v2/bot/message/reply"
+	url := "https://api.line.me/v2/bot/message/reply"
 
-// 	var jsonStr = []byte(value)
-// 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonStr))
-// 	req.Header.Set("Content-Type", "application/json")
-// 	req.Header.Add("Authorization", "Bearer "+ChannelToken)
+	var jsonStr = []byte(value)
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonStr))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Add("Authorization", "Bearer "+ChannelToken)
 
-// 	client := &http.Client{}
-// 	resp, err := client.Do(req)
-// 	if err != nil {
-// 		return nil
-// 	}
-// 	defer resp.Body.Close()
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil
+	}
+	defer resp.Body.Close()
 
-// 	log.Println("response Status:", resp.Status)
-// 	log.Println("response Headers:", resp.Header)
-// 	body, _ := ioutil.ReadAll(resp.Body)
-// 	log.Println("response Body:", string(body))
+	log.Println("response Status:", resp.Status)
+	log.Println("response Headers:", resp.Header)
+	body, _ := ioutil.ReadAll(resp.Body)
+	log.Println("response Body:", string(body))
 
-// 	return err
-// }
+	return err
+}
+
+func sendMessageLine(c *fiber.Ctx) error {
+	text := Text{
+		Type: "text",
+		Text: "ข้อความ สวัสดี",
+	}
+	SendMessage := SendMessage{
+		To: "U43c8656500da5a08f4f4a27774567144",
+		Messages: []Text{
+			text,
+		},
+	}
+	value, _ := json.Marshal(SendMessage)
+	url := "https://api.line.me/v2/bot/message/push"
+	var jsonStr = []byte(value)
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonStr))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Add("Authorization", "Bearer "+ChannelToken)
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil
+	}
+	defer resp.Body.Close()
+
+	log.Println("response Status:", resp.Status)
+	log.Println("response Headers:", resp.Header)
+	body, _ := ioutil.ReadAll(resp.Body)
+	log.Println("response Body:", string(body))
+	return err
+}
 
 // Handler hello
 func hello(c *fiber.Ctx) error {
